@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Resources | TeleConnectHub</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f9f9f9; }
+        header { background: #0056b3; color: white; padding: 1rem 20px; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 20px; }
+        .back-btn { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #0056b3; font-weight: bold; }
+        .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .resource-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { margin-bottom: 20px; }
+        /* Dark Mode */
+        .resource-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        body.dark-mode { background-color: #121212; color: #e0e0e0; }
+        body.dark-mode header { background-color: #1a1a1a; }
+        body.dark-mode .resource-card { background-color: #2d2d2d; color: #e0e0e0; box-shadow: 0 2px 5px rgba(255,255,255,0.05); }
+        body.dark-mode .back-btn { color: #66b3ff; }
+        
+        /* Loader */
+        .page-loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #f9f9f9; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s; opacity: 0; visibility: hidden;
+        }
+        body.dark-mode .page-loader { background-color: #121212; }
+        .page-loader.active { opacity: 1; visibility: visible; }
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%;
+            border-left-color: #0056b3; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Video Modal */
+        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); }
+        .modal-content { margin: 10% auto; width: 80%; max-width: 800px; position: relative; background: #000; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .close-video { position: absolute; top: -40px; right: 0; color: white; font-size: 35px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
+        .close-video:hover { color: #ff9f1c; }
+
+        /* Request Modal Styles */
+        .request-modal-content { background-color: #fefefe; margin: 10% auto; padding: 2rem; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 8px; position: relative; }
+        body.dark-mode .request-modal-content { background-color: #2d2d2d; color: #e0e0e0; border-color: #444; }
+        .close-request { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-request:hover { color: black; }
+        body.dark-mode .close-request:hover { color: white; }
+        .modal-form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .modal-form input, .modal-form textarea, .modal-form select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
+        body.dark-mode .modal-form input, body.dark-mode .modal-form textarea, body.dark-mode .modal-form select { background: #333; color: white; border-color: #555; }
+        .modal-form button { width: 100%; padding: 10px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .modal-form button:hover { background: #004494; }
+
+        /* Search & Filter */
+        .search-container { margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .search-input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+        .filter-btn { padding: 10px 20px; background: #e0e0e0; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; transition: all 0.3s; }
+        .filter-btn:hover, .filter-btn.active { background: #0056b3; color: white; }
+        body.dark-mode .search-input { background: #333; color: white; border-color: #555; }
+        body.dark-mode .filter-btn { background: #333; color: #ccc; }
+        body.dark-mode .filter-btn.active { background: #0056b3; color: white; }
+
+        /* Request Section */
+        .request-section { background: #eef6fc; padding: 40px; border-radius: 8px; text-align: center; margin-top: 50px; }
+        body.dark-mode .request-section { background: #1e1e1e; }
+        
+        /* Footer */
+        footer { background-color: #222; color: #aaa; padding: 3rem 20px; text-align: center; margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <div id="pageLoader" class="page-loader">
+        <div class="spinner"></div>
+        <div style="margin-top: 15px; font-weight: bold; color: #0056b3;">Loading Resources...</div>
+    </div>
+
+    <header style="position: relative;">
+        <div class="container" style="margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <h2>TeleConnectHub 📚</h2>
+            <button id="themeToggle" style="background: transparent; border: 1px solid white; color: white; padding: 5px 10px; cursor: pointer; border-radius: 4px;">🌙 Dark Mode</button>
+        </div>
+    </header>
+    <div class="container">
+        <a href="mainPage.html" class="back-btn">&larr; Back to Dashboard</a>
+        <h1>Learning Resources</h1>
+        <p>Explore our curated collection of educational materials designed for telecom students.</p>
+        
+        <div class="search-container">
+            <input type="text" id="resourceSearch" class="search-input" placeholder="Search resources (e.g., Physics, NUST, 5G)...">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="university">University</button>
+            <button class="filter-btn" data-filter="highschool">High School</button>
+        </div>
+
+        <div class="resource-grid" style="margin-top: 30px;">
+            <div class="resource-card" data-category="university">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80" alt="UNAM Engineering">
+                <h3>UNAM Engineering Lectures</h3>
+                <p>Video series from the University of Namibia's Faculty of Engineering on Digital Signal Processing.</p>
+                <button class="watch-btn" data-video="https://www.youtube.com/embed/M7lc1UVf-VE" style="margin-top: 10px; padding: 5px 10px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer;">Watch Lectures</button>
+            </div>
+            <div class="resource-card" data-category="university">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="NUST Networking">
+                <h3>NUST Telecom Systems</h3>
+                <p>Comprehensive study notes and slides from Namibia University of Science and Technology.</p>
+                <button onclick="downloadPDF('NUST_Telecom_Systems.pdf')" style="margin-top: 10px; padding: 5px 10px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer;">Download Notes</button>
+            </div>
+            <div class="resource-card" data-category="highschool">
+                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="High School Physics">
+                <h3>NSSCO/NSSCAS Physics</h3>
+                <p>High school curriculum resources covering waves, electricity, and basic communication systems.</p>
+                <button style="margin-top: 10px; padding: 5px 10px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer;">View Curriculum</button>
+            </div>
+            <div class="resource-card" data-category="highschool">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80" alt="Coding Clubs">
+                <h3>Namibian Coding Clubs</h3>
+                <p>Introductory programming tutorials (Python & Java) used in local high school coding clubs.</p>
+                <button style="margin-top: 10px; padding: 5px 10px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer;">Start Coding</button>
+            </div>
+            <div class="resource-card" data-category="university">
+                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" alt="Exam Papers">
+                <h3>Past Exam Papers</h3>
+                <p>Repository of past examination papers from UNAM, NUST, and IUM for revision.</p>
+                <button style="margin-top: 10px; padding: 5px 10px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer;">Access Papers</button>
+            </div>
+        </div>
+
+        <div class="request-section">
+            <h3 style="color: #0056b3; margin-bottom: 10px;">Can't find what you're looking for?</h3>
+            <p style="margin-bottom: 20px;">Request specific study materials, past papers, or tutorials from our community.</p>
+            <button id="requestResourceBtn" style="padding: 10px 25px; background: #ff9f1c; color: #333; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Request Resource</button>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-video">&times;</span>
+            <div class="video-container">
+                <iframe id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Resource Modal -->
+    <div id="requestModal" class="modal">
+        <div class="request-modal-content">
+            <span class="close-request">&times;</span>
+            <h2 style="text-align: center; color: #0056b3; margin-bottom: 1.5rem;">Request a Resource</h2>
+            <form id="requestForm" class="modal-form">
+                <label for="reqName">Your Name</label>
+                <input type="text" id="reqName" required placeholder="Enter your name">
+                
+                <label for="reqType">Resource Type</label>
+                <select id="reqType">
+                    <option value="tutorial">Video Tutorial</option>
+                    <option value="notes">Study Notes / PDF</option>
+                    <option value="paper">Past Exam Paper</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="reqDetails">Details (Topic, Subject, etc.)</label>
+                <textarea id="reqDetails" rows="4" required placeholder="Describe what you need..."></textarea>
+
+                <button type="submit">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>TeleConnectHub</h3>
+            <p>&copy; 2026 TeleConnectHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const body = document.body;
+        if(localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggle.innerText = '☀️ Light Mode';
+        }
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggle.innerText = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+
+        // Loader Logic
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if(href && !href.startsWith('#') && !href.startsWith('javascript')) {
+                    e.preventDefault();
+                    document.getElementById('pageLoader').classList.add('active');
+                    setTimeout(() => window.location.href = href, 800);
+                }
+            });
+        });
+
+        // Video Modal Logic
+        const videoModal = document.getElementById('videoModal');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const closeVideo = document.querySelector('.close-video');
+
+        document.querySelectorAll('.watch-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const videoSrc = this.getAttribute('data-video');
+                videoPlayer.src = videoSrc;
+                videoModal.style.display = "block";
+            });
+        });
+
+        const closeModal = () => {
+            videoModal.style.display = "none";
+            videoPlayer.src = ""; // Stop video playback
+        };
+
+        closeVideo.onclick = closeModal;
+
+        // Request Modal Logic
+        const requestModal = document.getElementById('requestModal');
+        const requestBtn = document.getElementById('requestResourceBtn');
+        const closeRequest = document.querySelector('.close-request');
+        const requestForm = document.getElementById('requestForm');
+
+        requestBtn.onclick = () => { requestModal.style.display = "block"; }
+        closeRequest.onclick = () => { requestModal.style.display = "none"; }
+        
+        requestForm.onsubmit = (e) => {
+            e.preventDefault();
+            alert("Request submitted successfully! We'll notify you when it's available.");
+            requestModal.style.display = "none";
+            requestForm.reset();
+        }
+
+        window.onclick = (event) => { if (event.target == videoModal) closeModal(); if (event.target == requestModal) requestModal.style.display = "none"; };
+
+        // Download PDF Simulation
+        function downloadPDF(filename) {
+            document.getElementById('pageLoader').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('pageLoader').classList.remove('active');
+                // Create a dummy file for demonstration
+                const element = document.createElement('a');
+                const file = new Blob(['This is a placeholder file for ' + filename], {type: 'text/plain'});
+                element.href = URL.createObjectURL(file);
+                element.download = filename + ".txt"; // Downloading as .txt for demo purposes
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            }, 1500);
+        }
+
+        // Search and Filter Logic
+        const searchInput = document.getElementById('resourceSearch');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.resource-card');
+
+        function filterResources() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeCategory = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const desc = card.querySelector('p').innerText.toLowerCase();
+                const category = card.getAttribute('data-category');
+                
+                const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+                const matchesCategory = activeCategory === 'all' || category === activeCategory;
+
+                card.style.display = (matchesSearch && matchesCategory) ? 'block' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterResources);
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                btn.classList.add('active');
+                filterResources();
+            });
+        });
+    </script>
+</body>
+</html>

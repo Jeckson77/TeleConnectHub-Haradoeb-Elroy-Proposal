@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | TeleConnectHub</title>
+    <!-- Socket.io Client Library -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f9f9f9; }
+        header { background: #0056b3; color: white; padding: 1rem 20px; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 20px; }
+        .back-btn { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #0056b3; font-weight: bold; }
+        
+        /* Community Header */
+        .community-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .search-bar { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px; min-width: 250px; font-size: 1rem; }
+        .btn-primary { padding: 12px 25px; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        .btn-primary:hover { background: #004494; }
+
+        /* Forum List */
+        .forum-list { display: flex; flex-direction: column; gap: 15px; }
+        .forum-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: flex-start; transition: transform 0.2s, border-left 0.2s; border-left: 4px solid transparent; }
+        .forum-card:hover { transform: translateX(5px); border-left-color: #ff9f1c; }
+        .user-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #eee; }
+        .topic-content { flex: 1; }
+        .topic-title { font-weight: bold; color: #0056b3; font-size: 1.1rem; margin-bottom: 5px; display: block; text-decoration: none; }
+        .topic-meta { font-size: 0.85rem; color: #888; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .topic-tag { background: #e0e0e0; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; color: #333; font-weight: 500; }
+        .reply-count { background: #f0f0f0; padding: 5px 10px; border-radius: 4px; font-size: 0.9rem; font-weight: bold; color: #555; min-width: 60px; text-align: center; }
+
+        /* Leaderboard */
+        .leaderboard-section { margin-top: 60px; }
+        .leaderboard-card { background: white; padding: 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; }
+        .leaderboard-header { background: #ff9f1c; color: #333; padding: 15px 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .leaderboard-list { list-style: none; padding: 0; margin: 0; }
+        .leaderboard-item { display: flex; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; transition: background 0.2s; }
+        .leaderboard-item:last-child { border-bottom: none; }
+        .leaderboard-item:hover { background: #f9f9f9; }
+        .rank { font-size: 1.2rem; font-weight: bold; color: #0056b3; width: 30px; }
+        .contributor-info { flex: 1; display: flex; align-items: center; gap: 10px; }
+        .contributor-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .points { font-weight: bold; color: #555; }
+        .badge-icon { font-size: 1.2rem; margin-left: 5px; }
+
+        /* Mentorship Section */
+        .mentorship-section { margin-top: 60px; }
+        .section-header { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 25px; color: #0056b3; }
+        .mentor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .mentor-card { background: white; padding: 25px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .mentor-card:hover { transform: translateY(-5px); }
+        .mentor-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; border: 3px solid #0056b3; }
+        .mentor-name { font-size: 1.2rem; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .mentor-role { color: #666; font-size: 0.9rem; margin-bottom: 15px; font-style: italic; }
+        .mentor-skills { margin-bottom: 20px; }
+        .btn-outline { background: transparent; border: 2px solid #0056b3; color: #0056b3; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .btn-outline:hover { background: #0056b3; color: white; }
+
+        /* Footer */
+        footer { background-color: #222; color: #aaa; padding: 3rem 20px; text-align: center; margin-top: 4rem; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 2rem; border: 1px solid #888; width: 90%; max-width: 600px; border-radius: 8px; position: relative; }
+        .close-modal { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-modal:hover { color: black; }
+        .modal-form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .modal-form input, .modal-form textarea, .modal-form select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
+
+        /* Dark Mode */
+        body.dark-mode { background-color: #121212; color: #e0e0e0; }
+        body.dark-mode header { background-color: #1a1a1a; }
+        body.dark-mode .forum-card, body.dark-mode .mentor-card { background-color: #2d2d2d; color: #e0e0e0; box-shadow: 0 2px 5px rgba(255,255,255,0.05); }
+        body.dark-mode .topic-title { color: #66b3ff; }
+        body.dark-mode .leaderboard-card { background-color: #2d2d2d; color: #e0e0e0; }
+        body.dark-mode .leaderboard-item { border-bottom-color: #444; }
+        body.dark-mode .leaderboard-item:hover { background-color: #333; }
+        body.dark-mode .rank { color: #66b3ff; }
+        body.dark-mode .points { color: #ccc; }
+        body.dark-mode .back-btn { color: #66b3ff; }
+        body.dark-mode .search-bar { background: #333; color: white; border-color: #555; }
+        body.dark-mode .topic-tag { background: #444; color: #ddd; }
+        body.dark-mode .reply-count { background: #444; color: #ddd; }
+        body.dark-mode .mentor-name { color: #f4f4f4; }
+        body.dark-mode .mentor-role { color: #ccc; }
+        body.dark-mode .btn-outline { color: #66b3ff; border-color: #66b3ff; }
+        body.dark-mode .btn-outline:hover { background: #66b3ff; color: #121212; }
+        body.dark-mode .modal-content { background-color: #2d2d2d; color: #e0e0e0; border-color: #444; }
+        body.dark-mode .modal-form input, body.dark-mode .modal-form textarea, body.dark-mode .modal-form select { background: #333; color: white; border-color: #555; }
+        body.dark-mode .close-modal:hover { color: white; }
+
+        /* Loader */
+        .page-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #f9f9f9; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s; opacity: 0; visibility: hidden; }
+        body.dark-mode .page-loader { background-color: #121212; }
+        .page-loader.active { opacity: 1; visibility: visible; }
+        .spinner { border: 4px solid rgba(0,0,0,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: #0056b3; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Chat Widget */
+        .chat-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: #0056b3; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2000; transition: transform 0.3s; display: flex; justify-content: center; align-items: center; }
+        .chat-toggle-btn:hover { transform: scale(1.1); }
+        .chat-widget { position: fixed; bottom: 100px; right: 30px; width: 350px; height: 450px; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 2000; display: none; flex-direction: column; overflow: hidden; border: 1px solid #ddd; }
+        .chat-header { background: #0056b3; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .close-chat { cursor: pointer; font-size: 20px; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .message { padding: 8px 12px; border-radius: 8px; max-width: 80%; font-size: 0.9rem; }
+        .message.sent { background: #0056b3; color: white; align-self: flex-end; }
+        .message.received { background: #e0e0e0; color: #333; align-self: flex-start; }
+        .message.system { background: transparent; color: #888; font-size: 0.8rem; text-align: center; align-self: center; width: 100%; }
+        .chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; background: white; }
+        .chat-input-area input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
+        .chat-input-area button { padding: 8px 15px; background: #ff9f1c; color: #333; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        body.dark-mode .chat-widget, body.dark-mode .chat-input-area { background: #2d2d2d; border-color: #444; }
+        body.dark-mode .chat-header { background: #1a1a1a; }
+        body.dark-mode .chat-messages { background: #121212; }
+        body.dark-mode .message.received { background: #444; color: #ddd; }
+        body.dark-mode .chat-input-area input { background: #333; color: white; border-color: #555; }
+    </style>
+</head>
+<body>
+    <div id="pageLoader" class="page-loader">
+        <div class="spinner"></div>
+        <div style="margin-top: 15px; font-weight: bold; color: #0056b3;">Loading Community...</div>
+    </div>
+
+    <header style="position: relative;">
+        <div class="container" style="margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <h2>TeleConnectHub 🤝</h2>
+            <button id="themeToggle" style="background: transparent; border: 1px solid white; color: white; padding: 5px 10px; cursor: pointer; border-radius: 4px;">🌙 Dark Mode</button>
+        </div>
+    </header>
+    <div class="container">
+        <a href="mainPage.html" class="back-btn">&larr; Back to Dashboard</a>
+        <h1>Community Forums</h1>
+        <p>Connect with peers, mentors, and industry experts.</p>
+
+        <div class="community-header">
+            <input type="text" id="forumSearch" class="search-bar" placeholder="Search topics (e.g., Antenna, Internship, 5G)...">
+            <button class="btn-primary" id="startDiscussionBtn">Start Discussion</button>
+        </div>
+        
+        <div class="forum-list" id="forumList">
+            <!-- Topic 1 -->
+            <div class="forum-card">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="User" class="user-avatar">
+                <div class="topic-content">
+                    <a href="#" class="topic-title">Help with Antenna Propagation Calculation</a>
+                    <div class="topic-meta">
+                        <span class="topic-tag">Technical</span>
+                        <span>Posted by <strong>@student123</strong> • 2 hours ago</span>
+                    </div>
+                </div>
+                <div class="reply-count">5<br><span style="font-size:0.7rem; font-weight:normal;">Replies</span></div>
+            </div>
+            <!-- Topic 2 -->
+            <div class="forum-card">
+                <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" alt="User" class="user-avatar">
+                <div class="topic-content">
+                    <a href="#" class="topic-title">Internship experiences at MTC?</a>
+                    <div class="topic-meta">
+                        <span class="topic-tag">Career</span>
+                        <span>Posted by <strong>@grad2026</strong> • 1 day ago</span>
+                    </div>
+                </div>
+                <div class="reply-count">12<br><span style="font-size:0.7rem; font-weight:normal;">Replies</span></div>
+            </div>
+            <!-- Topic 3 -->
+            <div class="forum-card">
+                <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=100&q=80" alt="User" class="user-avatar">
+                <div class="topic-content">
+                    <a href="#" class="topic-title">Study Group for CCNA Certification</a>
+                    <div class="topic-meta">
+                        <span class="topic-tag">Study Group</span>
+                        <span>Posted by <strong>@net_ninja</strong> • 3 hours ago</span>
+                    </div>
+                </div>
+                <div class="reply-count">8<br><span style="font-size:0.7rem; font-weight:normal;">Replies</span></div>
+            </div>
+            <!-- Topic 4 -->
+            <div class="forum-card">
+                <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=100&q=80" alt="User" class="user-avatar">
+                <div class="topic-content">
+                    <a href="#" class="topic-title">5G vs 4G Architecture: Key Differences</a>
+                    <div class="topic-meta">
+                        <span class="topic-tag">Technical</span>
+                        <span>Posted by <strong>@tech_guru</strong> • 5 hours ago</span>
+                    </div>
+                </div>
+                <div class="reply-count">24<br><span style="font-size:0.7rem; font-weight:normal;">Replies</span></div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div class="leaderboard-section">
+            <h2 class="section-header">🏆 Top Contributors</h2>
+            <div class="leaderboard-card">
+                <div class="leaderboard-header">
+                    <span>Rank & User</span>
+                    <span>Reputation Points</span>
+                </div>
+                <ul class="leaderboard-list">
+                    <li class="leaderboard-item">
+                        <span class="rank">1</span>
+                        <div class="contributor-info">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" alt="User" class="contributor-avatar">
+                            <div>
+                                <div style="font-weight: bold;">@student123 <span class="badge-icon">🥇</span></div>
+                                <div style="font-size: 0.8rem; color: #888;">56 Posts</div>
+                            </div>
+                        </div>
+                        <span class="points">1,250 pts</span>
+                    </li>
+                    <li class="leaderboard-item">
+                        <span class="rank">2</span>
+                        <div class="contributor-info">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="User" class="contributor-avatar">
+                            <div>
+                                <div style="font-weight: bold;">@sarah_tech <span class="badge-icon">🥈</span></div>
+                                <div style="font-size: 0.8rem; color: #888;">42 Posts</div>
+                            </div>
+                        </div>
+                        <span class="points">980 pts</span>
+                    </li>
+                    <li class="leaderboard-item">
+                        <span class="rank">3</span>
+                        <div class="contributor-info">
+                            <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" alt="User" class="contributor-avatar">
+                            <div>
+                                <div style="font-weight: bold;">@net_wizard <span class="badge-icon">🥉</span></div>
+                                <div style="font-size: 0.8rem; color: #888;">38 Posts</div>
+                            </div>
+                        </div>
+                        <span class="points">850 pts</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Mentorship Section -->
+        <div class="mentorship-section">
+            <h2 class="section-header">Mentorship Program</h2>
+            <p style="margin-bottom: 20px;">Connect with industry professionals for guidance and career advice.</p>
+            
+            <div class="mentor-grid">
+                <div class="mentor-card">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Mentor" class="mentor-img">
+                    <div class="mentor-name">Dr. A. Smith</div>
+                    <div class="mentor-role">Senior RF Engineer at MTC</div>
+                    <div class="mentor-skills">
+                        <span class="topic-tag">RF Design</span>
+                        <span class="topic-tag">5G</span>
+                    </div>
+                    <button class="btn-outline" onclick="alert('Mentorship request sent!')">Request Mentorship</button>
+                </div>
+                <div class="mentor-card">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Mentor" class="mentor-img">
+                    <div class="mentor-name">Sarah J.</div>
+                    <div class="mentor-role">Cybersecurity Analyst at CRAN</div>
+                    <div class="mentor-skills">
+                        <span class="topic-tag">Network Security</span>
+                        <span class="topic-tag">IoT</span>
+                    </div>
+                    <button class="btn-outline" onclick="alert('Mentorship request sent!')">Request Mentorship</button>
+                </div>
+                <div class="mentor-card">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="Mentor" class="mentor-img">
+                    <div class="mentor-name">David K.</div>
+                    <div class="mentor-role">Network Architect at Telecom</div>
+                    <div class="mentor-skills">
+                        <span class="topic-tag">SDN</span>
+                        <span class="topic-tag">Cloud</span>
+                    </div>
+                    <button class="btn-outline" onclick="alert('Mentorship request sent!')">Request Mentorship</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Discussion Modal -->
+    <div id="discussionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 style="text-align: center; color: #0056b3; margin-bottom: 1.5rem;">Start a New Discussion</h2>
+            <form id="discussionForm" class="modal-form">
+                <label>Topic Title</label>
+                <input type="text" required placeholder="e.g., Question about Fiber Splicing">
+                
+                <label>Category</label>
+                <select>
+                    <option>General</option>
+                    <option>Technical Support</option>
+                    <option>Career Advice</option>
+                    <option>Study Group</option>
+                </select>
+
+                <label>Message</label>
+                <textarea rows="5" required placeholder="Describe your topic..."></textarea>
+
+                <button type="submit">Post Discussion</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Real-time Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <div class="chat-header">
+            <span>Live Community Chat</span>
+            <span class="close-chat">&times;</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message system">Welcome! Connect with peers in real-time.</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button id="sendMessageBtn">Send</button>
+        </div>
+    </div>
+    <button id="chatToggleBtn" class="chat-toggle-btn">💬</button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>TeleConnectHub</h3>
+            <p>&copy; 2026 TeleConnectHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const body = document.body;
+        if(localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggle.innerText = '☀️ Light Mode';
+        }
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggle.innerText = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+
+        // Loader Logic
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if(href && !href.startsWith('#') && !href.startsWith('javascript')) {
+                    e.preventDefault();
+                    document.getElementById('pageLoader').classList.add('active');
+                    setTimeout(() => window.location.href = href, 800);
+                }
+            });
+        });
+
+        // Search Logic
+        const searchInput = document.getElementById('forumSearch');
+        const forumCards = document.querySelectorAll('.forum-card');
+
+        searchInput.addEventListener('input', function() {
+            const term = this.value.toLowerCase();
+            forumCards.forEach(card => {
+                const title = card.querySelector('.topic-title').innerText.toLowerCase();
+                const tag = card.querySelector('.topic-tag').innerText.toLowerCase();
+                if(title.includes(term) || tag.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('discussionModal');
+        const btn = document.getElementById('startDiscussionBtn');
+        const close = document.querySelector('.close-modal');
+        const form = document.getElementById('discussionForm');
+
+        btn.onclick = () => modal.style.display = "block";
+        close.onclick = () => modal.style.display = "none";
+        window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
+        
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            alert('Discussion posted successfully!');
+            modal.style.display = "none";
+            form.reset();
+        };
+
+        // Chat Widget Logic
+        const chatWidget = document.getElementById('chat-widget');
+        const chatToggle = document.getElementById('chatToggleBtn');
+        const closeChat = document.querySelector('.close-chat');
+        const sendBtn = document.getElementById('sendMessageBtn');
+        const chatInput = document.getElementById('chatInput');
+        const messagesContainer = document.getElementById('chatMessages');
+
+        // Toggle Chat
+        chatToggle.onclick = () => {
+            chatWidget.style.display = chatWidget.style.display === 'flex' ? 'none' : 'flex';
+            if(chatWidget.style.display === 'flex') chatInput.focus();
+        };
+        closeChat.onclick = () => chatWidget.style.display = 'none';
+
+        // Add Message to UI
+        function addMessage(text, type) {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerText = text;
+            messagesContainer.appendChild(div);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Handle Send
+        function handleSend() {
+            const text = chatInput.value.trim();
+            if(text) {
+                addMessage(text, 'sent');
+                chatInput.value = '';
+                
+                // Simulate receiving a message (Mock Socket.io behavior)
+                setTimeout(() => {
+                    const responses = ["That's a great point!", "Has anyone worked with 5G core networks?", "I can help with that project.", "Check the resources tab for more info."];
+                    addMessage(responses[Math.floor(Math.random() * responses.length)], 'received');
+                }, 1500);
+            }
+        }
+
+        sendBtn.onclick = handleSend;
+        chatInput.onkeypress = (e) => { if(e.key === 'Enter') handleSend(); };
+    </script>
+</body>
+</html>

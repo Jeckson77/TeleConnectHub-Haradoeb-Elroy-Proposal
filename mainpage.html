@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleConnectHub | Empowering Telecom Students</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #00a8e8;
+            --accent-color: #ff9f1c;
+            --text-dark: #333;
+            --text-light: #f4f4f4;
+            --bg-light: #ffffff;
+            --bg-off-white: #f9f9f9;
+            --max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Navigation */
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            padding: 4rem 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--text-dark);
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 4rem 20px;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 10px auto 0;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-off-white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        /* Make cards clickable links */
+        a.card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .img-container img {
+            transform: scale(1.1);
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            background-color: var(--bg-off-white);
+            width: 100%;
+            max-width: 100%; /* Full width background */
+        }
+        
+        .benefits-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .benefit-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 2rem;
+        }
+
+        .benefit-item {
+            flex: 1 1 200px;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        /* Implementation Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .phase {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .phase::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background-color: var(--primary-color);
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .phase h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Budget Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #aaa;
+            padding: 3rem 20px;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .newsletter-form input {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 250px;
+            max-width: 100%;
+        }
+        
+        .newsletter-form button {
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--text-dark);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .newsletter-form button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar {
+                height: 100%;
+                width: 250px;
+                position: fixed;
+                z-index: 2000;
+                top: 0;
+                left: 0;
+                background-color: #222;
+                overflow-x: hidden;
+                padding-top: 20px;
+                box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            }
+
+            .sidebar a {
+                padding: 15px 25px;
+                text-decoration: none;
+                font-size: 1.1rem;
+                color: #aaa;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .sidebar a:hover {
+                color: var(--text-light);
+                background-color: #333;
+                border-left: 4px solid var(--accent-color);
+            }
+
+            body {
+                margin-left: 250px;
+            }
+        }
+
+        /* Page Section Toggling */
+        .page-section {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 3000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.5); 
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; 
+            padding: 2rem;
+            border: 1px solid #888;
+            width: 90%; 
+            max-width: 400px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--text-dark);
+        }
+        
+        .modal-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 16px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .modal-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .modal-form button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Modal Tabs */
+        .modal-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: #666;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Profile Icon */
+        .profile-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: var(--text-dark);
+            border: 2px solid white;
+            overflow: hidden;
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-name {
+            color: var(--text-light);
+            font-weight: 500;
+            display: none;
+        }
+
+        @media (min-width: 769px) {
+            .profile-name {
+                display: block;
+            }
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 10px;
+            background-color: white;
+            min-width: 150px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            z-index: 2000;
+        }
+        
+        .profile-dropdown a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: #f5f5f5;
+            color: var(--primary-color);
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            --text-dark: #f0f0f0;
+            --bg-light: #121212;
+            --bg-off-white: #1e1e1e;
+            --primary-color: #3a8fd6;
+        }
+        body.dark-mode .sidebar { background-color: #000; }
+        body.dark-mode .modal-content { background-color: #2d2d2d; color: #f0f0f0; border-color: #444; }
+        body.dark-mode input { background-color: #333; color: white; border: 1px solid #555; }
+        body.dark-mode .card { background-color: #252525; }
+        body.dark-mode footer { background-color: #000; }
+
+        /* Page Loader */
+        .page-loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-light);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .page-loader.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Partners Banner */
+        .partners-banner {
+            background-color: #f8f9fa;
+            padding: 2rem 20px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .partner-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            opacity: 0.7;
+        }
+
+        .partner-logos img {
+            height: 40px;
+            transition: transform 0.3s;
+        }
+
+        .partner-logos img:hover {
+            transform: scale(1.1);
+        }
+
+        .event-mini-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-mini-card .img-container {
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .event-mini-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .event-mini-card:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Loader -->
+    <div id="pageLoader" class="page-loader">
+        <div class="spinner" style="width: 60px; height: 60px; border-width: 6px;"></div>
+        <div class="loader-text">Connecting...</div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div style="padding: 0 25px 20px; color: white; font-size: 1.5rem; font-weight: bold;">Menu</div>
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#budget">Budget</a>
+        <a href="about.html">About Us</a>
+        <a href="faq.html">FAQ</a>
+        <a href="settings.html">Settings</a>
+        <a href="#" id="loginBtn">Login</a>
+    </div>
+
+    <!-- Navigation -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">TeleConnectHub</div>
+            <button id="themeToggle" style="background: transparent; border: 1px solid white; color: white; padding: 5px 10px; cursor: pointer; border-radius: 4px; margin-right: 15px;">🌙 Dark Mode</button>
+            <div style="position: relative;">
+                <div class="profile-user" id="userProfile" style="display: none;">
+                    <span class="profile-name" id="profileNameDisplay">User</span>
+                    <div class="profile-img" id="profileInitials">U</div>
+                </div>
+                <div id="profileDropdown" class="profile-dropdown">
+                    <a href="#profile" id="myProfileBtn">My Profile</a>
+                    <a href="settings.html">Settings</a>
+                    <a href="#" id="logoutBtn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="page-section" style="padding: 0;">
+        <div class="hero">
+            <h1>Latest Industry Trends & Innovations</h1>
+            <p>Stay updated with the latest breakthroughs in Telecommunications.</p>
+        </div>
+
+        <!-- Partners Banner -->
+        <div class="partners-banner">
+            <p style="font-weight: bold; color: #666; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Trusted by Industry Leaders</p>
+            <div class="partner-logos">
+                <img src="https://placehold.co/120x50/003399/ffffff/png?text=MTC" alt="MTC">
+                <img src="https://placehold.co/120x50/ffcc00/000000/png?text=Telecom" alt="Telecom Namibia">
+                <img src="https://placehold.co/120x50/ff0000/ffffff/png?text=Huawei" alt="Huawei">
+                <img src="https://placehold.co/120x50/049fd9/ffffff/png?text=Cisco" alt="Cisco">
+                <img src="https://placehold.co/120x50/002561/ffffff/png?text=Ericsson" alt="Ericsson">
+            </div>
+        </div>
+        
+        <div style="max-width: 1200px; margin: 0 auto; padding: 4rem 20px;">
+            
+            <!-- Upcoming Events Preview -->
+            <div style="margin-bottom: 4rem;">
+                <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: left; border-left: 5px solid var(--accent-color); padding-left: 15px;">📅 Upcoming Events</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div class="event-mini-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=600&q=80" alt="5G Webinar">
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--accent-color); font-weight: bold; margin-bottom: 0.5rem;">Nov 15, 2026</div>
+                        <h4>5G Network Slicing Webinar</h4>
+                        <p style="font-size: 0.9rem; color: #666;">Join industry experts discussing the future of network architecture.</p>
+                        <button class="cta-button register-event-btn" style="width: 100%; margin-top: 1rem; border: none; cursor: pointer;">Register</button>
+                    </div>
+                    <div class="event-mini-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" alt="IoT Hackathon">
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--accent-color); font-weight: bold; margin-bottom: 0.5rem;">Dec 02, 2026</div>
+                        <h4>IoT Hackathon: Smart Cities</h4>
+                        <p style="font-size: 0.9rem; color: #666;">Build solutions for urban connectivity challenges. Prizes to be won!</p>
+                        <button class="cta-button register-event-btn" style="width: 100%; margin-top: 1rem; border: none; cursor: pointer;">Register</button>
+                    </div>
+                    <div class="event-mini-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=80" alt="Fiber Workshop">
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--accent-color); font-weight: bold; margin-bottom: 0.5rem;">Jan 10, 2027</div>
+                        <h4>Fiber Optics Workshop</h4>
+                        <p style="font-size: 0.9rem; color: #666;">Hands-on training session on splicing and testing fiber cables.</p>
+                        <button class="cta-button register-event-btn" style="width: 100%; margin-top: 1rem; border: none; cursor: pointer;">Register</button>
+                    </div>
+                    <div class="event-mini-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" alt="Career Fair">
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--accent-color); font-weight: bold; margin-bottom: 0.5rem;">Feb 05, 2027</div>
+                        <h4>Telecom Career Fair</h4>
+                        <p style="font-size: 0.9rem; color: #666;">Meet recruiters from top telecom companies and find your next role.</p>
+                        <button class="cta-button register-event-btn" style="width: 100%; margin-top: 1rem; border: none; cursor: pointer;">Register</button>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Telecom News Feed</h2>
+            <div class="features-grid" id="news-feed">
+                <div class="card" style="text-align: center; grid-column: 1 / -1;">
+                    <div class="spinner"></div>
+                    <h3 style="margin-top: 1rem; color: var(--primary-color);">Loading News...</h3>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <button id="loadMoreNewsBtn" class="cta-button" style="display:none; margin-right: 1rem; background-color: var(--secondary-color); border: none; cursor: pointer;">Load More News</button>
+                <a href="#jobs" class="cta-button">Explore Career Opportunities</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section id="features" class="page-section">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+            <a href="learning.html" class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80" alt="Learning Resources">
+                </div>
+                <h3>📚 Learning Resources</h3>
+                <p>Access curated tutorials, videos, quizzes, and downloadable guides covering core telecom topics.</p>
+            </a>
+            <a href="projects.html" class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80" alt="Projects & Labs">
+                </div>
+                <h3>🛠️ Project & Lab Support</h3>
+                <p>Get hands-on with sample projects, simulation tools, and templates for practical experience.</p>
+            </a>
+            <a href="insights.html" class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80" alt="Industry Insights">
+                </div>
+                <h3>📡 Industry Insights</h3>
+                <p>Stay updated with news, webinars, and whitepapers on 5G, IoT, and satellite communications.</p>
+            </a>
+            <a href="careers.html" class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80" alt="Career Development">
+                </div>
+                <h3>💼 Career Development</h3>
+                <p>Find internships and jobs, get resume tips, and prepare for interviews and certifications.</p>
+            </a>
+            <a href="community.html" class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80" alt="Community">
+                </div>
+                <h3>🤝 Community</h3>
+                <p>Engage in forums, showcase projects, and find mentorship from industry experts.</p>
+            </a>
+            <a href="tools.html" class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Tools & Calculators">
+                </div>
+                <h3>🧮 Tools & Calculators</h3>
+                <p>Utilize built-in tools for signal analysis, bandwidth estimation, and antenna visualization.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Jobs Section -->
+    <section id="jobs" class="page-section">
+        <h2 class="section-title">Career Opportunities</h2>
+        <div class="features-grid">
+            <div class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&w=600&q=80" alt="Network Engineer">
+                </div>
+                <h3>Network Engineer Intern</h3>
+                <p style="margin-bottom: 0.5rem;"><strong>Company:</strong> Telecom Namibia</p>
+                <p style="margin-bottom: 1rem;"><strong>Location:</strong> Windhoek</p>
+                <p>Assist in network maintenance and monitoring. Basic knowledge of IP networking required.</p>
+                <a href="#contact" class="cta-button" style="margin-top: 1rem; width: 100%; text-align: center;">Apply Now</a>
+            </div>
+            <div class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="5G Research">
+                </div>
+                <h3>5G Research Assistant</h3>
+                <p style="margin-bottom: 0.5rem;"><strong>Company:</strong> MTC</p>
+                <p style="margin-bottom: 1rem;"><strong>Location:</strong> Remote/Hybrid</p>
+                <p>Support the R&D team in testing 5G protocols and signal analysis.</p>
+                <a href="#contact" class="cta-button" style="margin-top: 1rem; width: 100%; text-align: center;">Apply Now</a>
+            </div>
+            <div class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=80" alt="Fiber Optic Technician">
+                </div>
+                <h3>Fiber Optic Technician</h3>
+                <p style="margin-bottom: 0.5rem;"><strong>Company:</strong> Paratus</p>
+                <p style="margin-bottom: 1rem;"><strong>Location:</strong> Walvis Bay</p>
+                <p>Field work involving installation and repair of fiber optic cables.</p>
+                <a href="#contact" class="cta-button" style="margin-top: 1rem; width: 100%; text-align: center;">Apply Now</a>
+            </div>
+            <div class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Satellite Comms">
+                </div>
+                <h3>Satellite Comms Intern</h3>
+                <p style="margin-bottom: 0.5rem;"><strong>Company:</strong> CRAN</p>
+                <p style="margin-bottom: 1rem;"><strong>Location:</strong> Windhoek</p>
+                <p>Analyze satellite frequency bands and assist in regulatory compliance monitoring.</p>
+                <a href="#contact" class="cta-button" style="margin-top: 1rem; width: 100%; text-align: center;">Apply Now</a>
+            </div>
+            <div class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80" alt="RF Engineer">
+                </div>
+                <h3>RF Engineer Graduate</h3>
+                <p style="margin-bottom: 0.5rem;"><strong>Company:</strong> PowerCom</p>
+                <p style="margin-bottom: 1rem;"><strong>Location:</strong> Oshakati</p>
+                <p>Design and optimize radio frequency systems for mobile networks.</p>
+                <a href="#contact" class="cta-button" style="margin-top: 1rem; width: 100%; text-align: center;">Apply Now</a>
+            </div>
+            <div class="card">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" alt="IoT Developer">
+                </div>
+                <h3>IoT Solutions Developer</h3>
+                <p style="margin-bottom: 0.5rem;"><strong>Company:</strong> Green Enterprise</p>
+                <p style="margin-bottom: 1rem;"><strong>Location:</strong> Swakopmund</p>
+                <p>Develop smart agriculture solutions using LoRaWAN and IoT sensors.</p>
+                <a href="#contact" class="cta-button" style="margin-top: 1rem; width: 100%; text-align: center;">Apply Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <div id="benefits" class="benefits-section page-section">
+        <section class="benefits-container">
+            <h2 class="section-title">Why TeleConnectHub?</h2>
+            <div class="benefit-list">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎓</div>
+                    <h3>Educational Advancement</h3>
+                    <p>Structured learning tailored specifically to telecom students.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚀</div>
+                    <h3>Career Growth</h3>
+                    <p>Direct connections to industry internships and job opportunities.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🌐</div>
+                    <h3>Community Building</h3>
+                    <p>Fostering collaboration between students and professionals.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Industry Readiness</h3>
+                    <p>Keeping you informed on the latest trends and required skills.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Implementation Plan -->
+    <section id="roadmap" class="page-section">
+        <h2 class="section-title">Implementation Roadmap</h2>
+        <div class="timeline">
+            <div class="phase">
+                <h4>Phase 1: Analysis & Design</h4>
+                <p>Requirement analysis, designing wireframes, and initial content collection.</p>
+            </div>
+            <div class="phase">
+                <h4>Phase 2: Core Development</h4>
+                <p>Development of learning resources, job portal, and community forums.</p>
+            </div>
+            <div class="phase">
+                <h4>Phase 3: Testing & Refinement</h4>
+                <p>Beta testing, user feedback collection, and platform refinement.</p>
+            </div>
+            <div class="phase">
+                <h4>Phase 4: Launch & Growth</h4>
+                <p>Official launch, marketing campaigns, and continuous feature updates.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget & Resources -->
+    <section id="budget" class="page-section">
+        <h2 class="section-title">Budget & Resources</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Allocation of resources to ensure platform sustainability.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Resource Category</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Development & Hosting</strong></td>
+                    <td>Server costs, domain registration, and development tools.</td>
+                </tr>
+                <tr>
+                    <td><strong>Content Creation</strong></td>
+                    <td>Licensing educational material and creating original tutorials.</td>
+                </tr>
+                <tr>
+                    <td><strong>Marketing</strong></td>
+                    <td>Outreach programs to universities and industry partners.</td>
+                </tr>
+                <tr>
+                    <td><strong>Maintenance</strong></td>
+                    <td>Ongoing technical support and feature updates.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="page-section">
+        <h2 class="section-title">Join TeleConnectHub</h2>
+        <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+            <p style="margin-bottom: 2rem;">Ready to accelerate your telecommunications career? Sign up for early access.</p>
+            <form style="display: flex; flex-direction: column; gap: 1rem;">
+                <input type="text" placeholder="Full Name" style="padding: 12px; border: 1px solid #ccc; border-radius: 4px;">
+                <input type="email" placeholder="Email Address" style="padding: 12px; border: 1px solid #ccc; border-radius: 4px;">
+                <button type="button" class="cta-button" style="border: none; cursor: pointer; font-size: 1rem;">Get Started</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="page-section">
+        <h2 class="section-title">My Profile</h2>
+        <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div id="profilePageImg" style="width: 150px; height: 150px; margin-bottom: 20px; border-radius: 50%; background-color: var(--accent-color); display: flex; justify-content: center; align-items: center; font-size: 4rem; color: var(--text-dark); border: 5px solid var(--primary-color); overflow: hidden;">
+                U
+            </div>
+            <h3 id="profilePageName" style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary-color);">User Name</h3>
+            <p id="profilePageEmail" style="color: #666; margin-bottom: 2rem; font-size: 1.1rem;">user@example.com</p>
+            <button class="cta-button" id="editProfileBtn">Edit Profile</button>
+            
+            <div style="width: 100%; margin-top: 2rem; text-align: left; border-top: 1px solid #eee; padding-top: 1rem;">
+                <h4 style="color: var(--primary-color); margin-bottom: 1rem;">📅 My Registered Events</h4>
+                <ul id="registeredEventsList" style="list-style: none; padding: 0;">
+                    <li style="color: #666; font-style: italic;">No events registered yet.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="tabLogin">Login</button>
+                <button class="tab-btn" id="tabRegister">Sign Up</button>
+            </div>
+
+            <form id="loginForm" class="modal-form">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+
+                <label for="psw"><b>Password</b></label>
+                <div class="password-wrapper">
+                    <input type="password" placeholder="Enter Password" name="psw" id="loginPsw" required>
+                    <span class="toggle-password" onclick="togglePassword('loginPsw', this)">👁️</span>
+                </div>
+
+                <button type="submit">Login</button>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <label><input type="checkbox" checked="checked" name="remember" style="width: auto; margin-right: 5px;"> Remember me</label>
+                    <a href="#" id="forgotPasswordLink" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">Forgot Password?</a>
+                </div>
+
+                <div class="social-login">
+                    <p style="font-size: 0.9rem; color: #888; margin-bottom: 10px;">Or login with</p>
+                    <button type="button" class="social-btn" onclick="alert('Google Login simulated')">🔵 Google</button>
+                    <button type="button" class="social-btn" onclick="alert('LinkedIn Login simulated')">🔵 LinkedIn</button>
+                </div>
+            </form>
+
+            <form id="registerForm" class="modal-form" style="display: none;">
+                <label for="fullname"><b>Full Name</b></label>
+                <input type="text" placeholder="Enter Full Name" name="fullname" required>
+
+                <label for="email"><b>Email</b></label>
+                <input type="email" placeholder="Enter Email" name="email" required>
+
+                <label for="profilePic"><b>Profile Picture</b></label>
+                <input type="file" id="profilePicInput" accept="image/*" style="margin-bottom: 15px;">
+
+                <label for="new-psw"><b>Password</b></label>
+                <div class="password-wrapper">
+                    <input type="password" placeholder="Create Password (min 8 chars)" name="new-psw" id="regPsw" required minlength="8">
+                    <span class="toggle-password" onclick="togglePassword('regPsw', this)">👁️</span>
+                </div>
+
+                <label for="confirm-psw"><b>Confirm Password</b></label>
+                <div class="password-wrapper">
+                    <input type="password" placeholder="Confirm Password" id="confirmPsw" required>
+                </div>
+                <div id="passwordError" class="error-message">Passwords do not match</div>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="forgotForm" class="modal-form" style="display: none;">
+                <h3 style="text-align: center; color: var(--primary-color); margin-bottom: 10px;">Reset Password</h3>
+                <p style="text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 20px;">Enter your email to receive a reset link.</p>
+                <label for="resetEmail"><b>Email</b></label>
+                <input type="email" placeholder="Enter Email" id="resetEmail" required>
+                <button type="submit">Send Reset Link</button>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="#" id="backToLogin" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">Back to Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeEditProfile">&times;</span>
+            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 1.5rem;">Edit Profile</h2>
+            <form id="editProfileForm" class="modal-form">
+                <label for="editName"><b>Full Name</b></label>
+                <input type="text" id="editNameInput" name="editName" required>
+
+                <label for="editEmail"><b>Email</b></label>
+                <input type="email" id="editEmailInput" name="editEmail" required>
+
+                <label for="editProfilePic"><b>Profile Picture</b></label>
+                <input type="file" id="editProfilePicInput" accept="image/*" style="margin-bottom: 15px;">
+
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- News Modal -->
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeNewsModal">&times;</span>
+            <h2 id="newsModalTitle" style="color: var(--primary-color); margin-bottom: 0.5rem;"></h2>
+            <p id="newsModalDate" style="font-size: 0.9rem; color: #666; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 10px;"></p>
+            <div id="newsModalBody" style="line-height: 1.8; color: #444;"></div>
+        </div>
+    </div>
+
+    <!-- Event Registration Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeEventModal">&times;</span>
+            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 1.5rem;">Register for Event</h2>
+            <p id="eventModalTitleDisplay" style="text-align: center; margin-bottom: 1rem; font-weight: bold; color: #555;"></p>
+            <form id="eventRegisterForm" class="modal-form">
+                <label for="regName"><b>Full Name</b></label>
+                <input type="text" placeholder="Enter Full Name" name="regName" required>
+
+                <label for="regEmail"><b>Email</b></label>
+                <input type="email" placeholder="Enter Email" name="regEmail" required>
+
+                <input type="hidden" id="eventTitleInput" name="eventTitle">
+
+                <button type="submit">Confirm Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>TeleConnectHub</h3>
+            <p>An essential resource bridging the gap between academia and the telecommunications industry.</p>
+            <div style="margin: 20px 0;">
+                <a href="about.html" style="color: #aaa; text-decoration: none; margin: 0 10px;">About Us</a>
+                <a href="faq.html" style="color: #aaa; text-decoration: none; margin: 0 10px;">FAQ</a>
+            </div>
+            <form id="newsletterForm" class="newsletter-form">
+                <input type="email" placeholder="Enter your email for updates" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <p>&copy; 2026 TeleConnectHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Logic
+        const toggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check LocalStorage
+        if(localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggle.innerText = '☀️ Light Mode';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggle.innerText = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+
+        // Page Loader Logic for Links
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                // Only show loader for internal HTML file navigation
+                if(href && href.includes('.html') && !href.startsWith('#')) {
+                    e.preventDefault();
+                    document.getElementById('pageLoader').classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 800); // 800ms delay for effect
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const originalText = counter.innerText;
+                const target = +originalText.replace(/[^0-9]/g, '');
+                const suffix = originalText.replace(/[0-9,]/g, '');
+                
+                let count = 0;
+                const duration = 2000; // 2 seconds animation
+                const step = target / (duration / 16); // 60fps approximation
+
+                const updateCount = () => {
+                    count += step;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count).toLocaleString() + suffix;
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        counter.innerText = originalText;
+                    }
+                };
+
+                updateCount();
+            });
+
+            // Navigation Logic for Single Page Application feel
+            const navLinks = document.querySelectorAll('.sidebar a:not(#loginBtn), .cta-button');
+            const sections = document.querySelectorAll('.page-section');
+
+            function showSection(targetId) {
+                // Hide all sections
+                sections.forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Show target section
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.style.display = 'block';
+                }
+
+                // Update Sidebar Active State
+                document.querySelectorAll('.sidebar a').forEach(link => {
+                    link.style.background = 'transparent';
+                    link.style.borderLeft = 'none';
+                    link.style.color = '#aaa';
+                    if(link.getAttribute('href') === '#' + targetId) {
+                        link.style.color = 'var(--text-light)';
+                        link.style.borderLeft = '4px solid var(--accent-color)';
+                    }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    showSection(targetId);
+                });
+            });
+
+            // My Profile Button Logic
+            document.getElementById('myProfileBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                showSection('profile');
+                document.getElementById('profileDropdown').style.display = 'none';
+            });
+
+            // Show Home by default
+            showSection('home');
+
+            // Modal Logic
+            const modal = document.getElementById("loginModal");
+            const btn = document.getElementById("loginBtn");
+            const span = document.getElementsByClassName("close-modal")[0];
+
+            btn.onclick = function(e) {
+                e.preventDefault();
+                modal.style.display = "block";
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+                if (event.target == document.getElementById("editProfileModal")) {
+                    document.getElementById("editProfileModal").style.display = "none";
+                }
+                if (event.target == document.getElementById("newsModal")) {
+                    document.getElementById("newsModal").style.display = "none";
+                }
+                if (event.target == document.getElementById("eventModal")) {
+                    document.getElementById("eventModal").style.display = "none";
+                }
+                // Close dropdown if clicking outside
+                if (!event.target.closest('.profile-user') && !event.target.closest('.profile-dropdown')) {
+                    document.getElementById('profileDropdown').style.display = 'none';
+                }
+            });
+
+            // Tab Switching Logic
+            const loginTab = document.getElementById('tabLogin');
+            const registerTab = document.getElementById('tabRegister');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            loginTab.onclick = () => {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            };
+
+            registerTab.onclick = () => {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.style.display = 'block';
+                loginForm.style.display = 'none';
+            };
+
+            // Password Toggle Logic
+            window.togglePassword = function(inputId, icon) {
+                const input = document.getElementById(inputId);
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.innerText = "🙈";
+                } else {
+                    input.type = "password";
+                    icon.innerText = "👁️";
+                }
+            };
+
+            // Forgot Password Logic
+            const forgotLink = document.getElementById('forgotPasswordLink');
+            const backLogin = document.getElementById('backToLogin');
+            const forgotForm = document.getElementById('forgotForm');
+            const modalTabs = document.querySelector('.modal-tabs');
+
+            forgotLink.onclick = (e) => {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                modalTabs.style.display = 'none';
+                forgotForm.style.display = 'block';
+            };
+
+            backLogin.onclick = (e) => {
+                e.preventDefault();
+                forgotForm.style.display = 'none';
+                modalTabs.style.display = 'flex';
+                loginForm.style.display = 'block';
+            };
+            
+            document.getElementById('forgotForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Password reset link sent to your email!');
+                backLogin.click();
+            });
+
+            // Handle Login Form Submit
+            const loginFormElement = document.getElementById('loginForm');
+            loginFormElement.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = loginFormElement.querySelector('input[name="uname"]').value;
+                
+                // Update Profile UI
+                document.getElementById('profileNameDisplay').innerText = username;
+                document.getElementById('profileInitials').innerText = username.charAt(0).toUpperCase();
+                
+                // Update Profile Page
+                document.getElementById('profilePageName').innerText = username;
+                document.getElementById('profilePageImg').innerText = username.charAt(0).toUpperCase();
+
+                document.getElementById('userProfile').style.display = 'flex';
+                document.getElementById('loginBtn').style.display = 'none'; // Hide sidebar login button
+                
+                modal.style.display = "none";
+            });
+
+            // Handle Register Form Submit
+            const registerFormElement = document.getElementById('registerForm');
+            registerFormElement.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fullname = registerFormElement.querySelector('input[name="fullname"]').value;
+                const email = registerFormElement.querySelector('input[name="email"]').value;
+                const psw = document.getElementById('regPsw').value;
+                const confirmPsw = document.getElementById('confirmPsw').value;
+                
+                if(psw !== confirmPsw) {
+                    document.getElementById('passwordError').style.display = 'block';
+                    document.getElementById('confirmPsw').classList.add('error');
+                    return;
+                }
+
+                const fileInput = document.getElementById('profilePicInput');
+                
+                // Update Profile UI
+                document.getElementById('profileNameDisplay').innerText = fullname;
+                const profileImgContainer = document.getElementById('profileInitials');
+                
+                // Update Profile Page
+                document.getElementById('profilePageName').innerText = fullname;
+                document.getElementById('profilePageEmail').innerText = email;
+                const profilePageImg = document.getElementById('profilePageImg');
+
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImgContainer.innerHTML = `<img src="${e.target.result}" alt="Profile">`;
+                        profilePageImg.innerHTML = `<img src="${e.target.result}" alt="Profile" style="width:100%; height:100%; object-fit:cover;">`;
+                    }
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    profileImgContainer.innerText = fullname.charAt(0).toUpperCase();
+                    profilePageImg.innerText = fullname.charAt(0).toUpperCase();
+                }
+
+                document.getElementById('userProfile').style.display = 'flex';
+                document.getElementById('loginBtn').style.display = 'none';
+                modal.style.display = "none";
+            });
+
+            // Dropdown Toggle
+            document.getElementById('userProfile').addEventListener('click', (e) => {
+                const dropdown = document.getElementById('profileDropdown');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Logout Logic
+            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('userProfile').style.display = 'none';
+                document.getElementById('profileDropdown').style.display = 'none';
+                document.getElementById('loginBtn').style.display = 'block';
+                
+                // Reset forms
+                document.getElementById('loginForm').reset();
+                document.getElementById('registerForm').reset();
+            });
+
+            // Edit Profile Logic
+            const editModal = document.getElementById("editProfileModal");
+            const editBtn = document.getElementById("editProfileBtn");
+            const closeEdit = document.getElementById("closeEditProfile");
+            const editForm = document.getElementById("editProfileForm");
+
+            editBtn.onclick = function() {
+                document.getElementById("editNameInput").value = document.getElementById("profilePageName").innerText;
+                document.getElementById("editEmailInput").value = document.getElementById("profilePageEmail").innerText;
+                editModal.style.display = "block";
+            }
+
+            closeEdit.onclick = function() {
+                editModal.style.display = "none";
+            }
+
+            editForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newName = document.getElementById("editNameInput").value;
+                const newEmail = document.getElementById("editEmailInput").value;
+                const newPicInput = document.getElementById("editProfilePicInput");
+
+                document.getElementById("profilePageName").innerText = newName;
+                document.getElementById("profilePageEmail").innerText = newEmail;
+                document.getElementById("profileNameDisplay").innerText = newName;
+
+                if (newPicInput.files && newPicInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imgTag = `<img src="${e.target.result}" alt="Profile" style="width:100%; height:100%; object-fit:cover;">`;
+                        document.getElementById("profilePageImg").innerHTML = imgTag;
+                        document.getElementById("profileInitials").innerHTML = imgTag;
+                    }
+                    reader.readAsDataURL(newPicInput.files[0]);
+                }
+                editModal.style.display = "none";
+            });
+
+            // Newsletter Subscription Logic
+            document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you for subscribing to the TeleConnectHub newsletter!');
+                e.target.reset();
+            });
+
+            // News Modal Logic
+            const newsModal = document.getElementById("newsModal");
+            const closeNewsModal = document.getElementById("closeNewsModal");
+            const newsTitle = document.getElementById("newsModalTitle");
+            const newsDate = document.getElementById("newsModalDate");
+            const newsBody = document.getElementById("newsModalBody");
+
+            document.querySelectorAll('.read-news-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const card = btn.closest('.card');
+                    const title = card.querySelector('h3').innerText;
+                    const date = card.querySelector('p').innerText;
+                    
+                    newsTitle.innerText = title;
+                    newsDate.innerText = date;
+                    newsBody.innerHTML = `<p><strong>(Full Article Placeholder)</strong></p><p>This is where the full content for "${title}" would appear. In a real application, this data would be fetched from a database or API.</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>`;
+                    
+                    newsModal.style.display = "block";
+                });
+            });
+
+            closeNewsModal.onclick = function() {
+                newsModal.style.display = "none";
+            }
+
+            // Event Registration Logic
+            const eventModal = document.getElementById("eventModal");
+            const closeEventModal = document.getElementById("closeEventModal");
+            const eventTitleDisplay = document.getElementById("eventModalTitleDisplay");
+            const eventTitleInput = document.getElementById("eventTitleInput");
+            const eventForm = document.getElementById("eventRegisterForm");
+            let currentEventDate = "";
+
+            document.querySelectorAll('.register-event-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const card = btn.closest('.event-mini-card');
+                    const title = card.querySelector('h4').innerText;
+                    // The date is the second child (index 1) of the card
+                    currentEventDate = card.children[1].innerText;
+                    
+                    eventTitleDisplay.innerText = title;
+                    eventTitleInput.value = title;
+                    eventModal.style.display = "block";
+                });
+            });
+
+            closeEventModal.onclick = function() {
+                eventModal.style.display = "none";
+            }
+
+            eventForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = eventTitleInput.value;
+                
+                // Add to Profile
+                const list = document.getElementById('registeredEventsList');
+                // Remove "No events" message if it exists
+                if(list.querySelector('li') && list.querySelector('li').innerText === "No events registered yet.") {
+                    list.innerHTML = '';
+                }
+
+                const li = document.createElement('li');
+                li.style.cssText = "padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;";
+                li.innerHTML = `<span>${title}</span> <span style="color: var(--accent-color); font-weight: bold; font-size: 0.9rem;">${currentEventDate}</span>`;
+                list.appendChild(li);
+
+                alert(`Successfully registered for ${title}! Check your email for details.`);
+                eventModal.style.display = "none";
+                eventForm.reset();
+            });
+
+            // RSS Feed Parser
+            let allNewsItems = [];
+            let currentNewsIndex = 0;
+            const newsBatchSize = 3;
+            const loadMoreBtn = document.getElementById('loadMoreNewsBtn');
+            const feedContainer = document.getElementById('news-feed');
+
+            const renderNews = () => {
+                const nextBatch = allNewsItems.slice(currentNewsIndex, currentNewsIndex + newsBatchSize);
+                
+                nextBatch.forEach(item => {
+                    const date = new Date(item.pubDate).toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    });
+
+                    // Create Card
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    // Strip HTML tags from description for cleaner text
+                    const description = (item.description || '').replace(/<[^>]*>?/gm, '').substring(0, 120) + '...';
+                    
+                    // Attempt to find an image
+                    let imageUrl = 'https://placehold.co/600x400/0056b3/ffffff?text=Telecom+News';
+                    if (item.enclosure && item.enclosure.link) {
+                        imageUrl = item.enclosure.link;
+                    } else if (item.thumbnail) {
+                        imageUrl = item.thumbnail;
+                    }
+
+                    card.innerHTML = `
+                        <div class="img-container">
+                            <img src="${imageUrl}" alt="${item.title}">
+                        </div>
+                        <h3>${item.title}</h3>
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">${date}</p>
+                        <p>${description}</p>
+                        <a href="${item.link}" target="_blank" style="color: var(--primary-color); font-weight: bold; text-decoration: none; display: block; margin-top: 15px;">Read Full Story &rarr;</a>
+                    `;
+                    feedContainer.appendChild(card);
+                });
+
+                currentNewsIndex += nextBatch.length;
+
+                // Hide button if no more items
+                if (currentNewsIndex >= allNewsItems.length) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.style.display = 'inline-block';
+                }
+            };
+
+            const loadNews = async () => {
+                // Using rss2json service to convert RSS XML to JSON to avoid CORS issues
+                const rssUrl = 'https://www.telecoms.com/rss.xml';
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+
+                try {
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+
+                    if (data.status === 'ok') {
+                        feedContainer.innerHTML = ''; // Clear loading state
+                        allNewsItems = data.items;
+                        renderNews();
+                    }
+                } catch (error) {
+                    console.error('Error fetching news:', error);
+                    feedContainer.innerHTML = '<div class="card"><h3>News Unavailable</h3><p>Could not load the latest news feed.</p></div>';
+                }
+            };
+
+            loadMoreBtn.addEventListener('click', renderNews);
+            loadNews();
+        });
+    </script>
+</body>
+</html>
