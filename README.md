@@ -1,4 +1,4 @@
-# TeleConnectHub-Haradoeb-Elroy-Proposal    (https://jeckson77.github.io/TeleConnectHub-Haradoeb-Elroy-Proposal/mainpage.html)
+# TeleConnectHub-Haradoeb-Elroy-Proposal    (https://tele-connect-hub-haradoeb-elroy-pro.vercel.app/)
 The primary goal of TeleConnectHub is to create a comprehensive, user-friendly online ecosystem that empowers telecommunications students to: Access quality educational resources and practical tools. Stay updated with the latest industry trends and innovations. Discover internships, jobs, and certification opportunities. 
 
 
